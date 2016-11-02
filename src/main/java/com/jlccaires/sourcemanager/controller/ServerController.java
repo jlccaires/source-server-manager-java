@@ -1,7 +1,6 @@
 package com.jlccaires.sourcemanager.controller;
 
 import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
-import com.jlccaires.sourcemanager.domain.Player;
 import com.jlccaires.sourcemanager.service.ServerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,8 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 @RestController
@@ -47,9 +44,8 @@ public class ServerController {
 		if (!serverService.isAuthenticated()) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
-		final List<Player> players = new ArrayList<>();
-		serverService.getPlayers().forEach((key, value) -> players.add(Player.create(value)));
-		return players;
+
+		return serverService.getPlayers();
 	}
 
 	@GetMapping("/sendCommand")

@@ -119,7 +119,7 @@
 										<td class="hidden-sm hidden-xs" v-text="player.steamId" />
 										<td v-text="player.score" />
 										<td class="hidden-sm hidden-xs" v-text="player.ipAddress" />
-										<td v-text="moment(new Date(1970, 1, 1, 0, 0, player.connectTime.toString().replace(/\..*/gi, ''), 0)).format('HH:mm:ss')" />
+										<td v-text="player.connectedTime" />
 										<td v-text="player.ping" />
 										<td>
 											<button type="button" v-on:click="playerOptions(player)" class="btn text-center icons-group" style="padding: 4px 4px 4px 4px;"> <span class="glyphicon glyphicon-option-vertical" aria-hidden="true"></span> </button>

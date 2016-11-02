@@ -1,8 +1,8 @@
 package com.jlccaires.sourcemanager.service;
 
 import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
-import com.github.koraktor.steamcondenser.steam.SteamPlayer;
 import com.github.koraktor.steamcondenser.steam.servers.SourceServer;
+import com.jlccaires.sourcemanager.domain.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -10,14 +10,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.TimeoutException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @SessionScope
 public class ServerService {
 
     private static final String TOPIC_CONSOLE = "/topic/console";
+    private static final Pattern pPlayers = Pattern.compile("#\\s+(\\d+)\\s+\"(.+)\"\\s+\\[(.+)\\]\\s+(\\d+\\:\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\w+)\\s+(\\d+.\\d+.\\d+.\\d+)");
 
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
@@ -56,16 +61,31 @@ public class ServerService {
         }
     }
 
-    public HashMap<String, SteamPlayer> getPlayers() throws SteamCondenserException, TimeoutException {
+    public List<Player> getPlayers() throws SteamCondenserException, TimeoutException {
         SourceServer server = getServer(true);
         if (server == null) {
-            return new HashMap<>();
+            return new ArrayList<>();
         }
-        try {
-            return server.getPlayers();
-        } finally {
-            server.disconnect();
+
+        final String playersString = server.rconExec("status");
+        final String[] pStringArray = playersString.split("\n");
+
+        final List<Player> players = new ArrayList<>();
+        for (String pLine : pStringArray) {
+            Matcher matcher = pPlayers.matcher(pLine);
+            if (matcher.find()) {
+                final Player player = new Player();
+                player.setId(Integer.parseInt(matcher.group(1)));
+                player.setName(matcher.group(2));
+                player.setSteamId(matcher.group(3));
+                player.setConnectedTime(matcher.group(4));
+                player.setPing(Integer.parseInt(matcher.group(5)));
+                player.setIpAddress(matcher.group(8));
+                players.add(player);
+
+            }
         }
+        return players;
     }
 
     public String sendCommand(String command) throws TimeoutException, SteamCondenserException {
