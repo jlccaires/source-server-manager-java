@@ -2,12 +2,13 @@ package com.jlccaires.sourcemanager.domain;
 
 public class Player {
 
-    private String connectedTime;
+    private Integer connectedTime;
     private int id;
     private String ipAddress;
+    private String countryCode;
+    private String countryName;
     private String name;
     private int ping;
-    private int realId;
     private int score;
     private String steamId;
 
@@ -43,14 +44,6 @@ public class Player {
         this.ping = ping;
     }
 
-    public int getRealId() {
-        return realId;
-    }
-
-    public void setRealId(int realId) {
-        this.realId = realId;
-    }
-
     public int getScore() {
         return score;
     }
@@ -63,15 +56,31 @@ public class Player {
         return steamId;
     }
 
+    public Integer getConnectedTime() {
+        return connectedTime;
+    }
+
+    public void setConnectedTime(Integer connectedTime) {
+        this.connectedTime = connectedTime;
+    }
+
     public void setSteamId(String steamId) {
         this.steamId = steamId;
     }
 
-    public String getConnectedTime() {
-        return connectedTime;
+    public String getCountryCode() {
+        return countryCode;
     }
 
-    public void setConnectedTime(String connectedTime) {
-        this.connectedTime = connectedTime;
+    public void setCountryCode(final String countryCode) {
+        this.countryCode = countryCode;
+    }
+
+    public String getCountryName() {
+        return countryName;
+    }
+
+    public void setCountryName(final String countryName) {
+        this.countryName = countryName;
     }
 }

@@ -2,360 +2,389 @@
 <html>
 
 <head>
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-	<title>Source Server Manager</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
-	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css" rel="stylesheet" />
-	<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet" />
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.3/vue.min.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.16.4/lodash.min.js"></script>
-	<script type="text/javascript" src="https:////cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
-	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.2/moment-with-locales.min.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>Source Server Manager</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css" rel="stylesheet" />
+    <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.3/vue.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.16.4/lodash.min.js"></script>
+    <script type="text/javascript" src="https:////cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.2/moment-with-locales.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
 </head>
 
 <body>
-	<div id="app" class="container">
-		<div v-show="login.authenticated">
-			<div class="row">
-				<div class="col-xs-12 col-md-5">
-					<div class="panel panel-primary container-fluid">
-						<div class="panel-heading row">
-							<div class="col-xs-3 col-md-5" style="padding: 0;">
-								<h3 class="panel-title">Server Info</h3>
-							</div>
-							<div class="col-xs-4 col-md-3" style="padding: 0">
-								<div class="checkbox pull-right" style="margin: 0">
-									<label>
+    <div id="app" class="container">
+        <div v-show="login.authenticated">
+            <div class="row">
+                <div class="col-xs-12 col-md-5">
+                    <div class="panel panel-primary container-fluid">
+                        <div class="panel-heading row">
+                            <div class="col-xs-3 col-md-5" style="padding: 0;">
+                                <h3 class="panel-title">Server Info</h3>
+                            </div>
+                            <div class="col-xs-4 col-md-3" style="padding: 0">
+                                <div class="checkbox pull-right" style="margin: 0">
+                                    <label>
                                         <input v-model="autoUpdate" type="checkbox">Auto update</label>
-								</div>
-							</div>
-							<div class="col-xs-4 col-md-3" style="padding: 0;">
-								<select class="form-control pull-right" style="height: 20px; width: 80%; padding: 0" v-model="selectedDelay">
+                                </div>
+                            </div>
+                            <div class="col-xs-4 col-md-3" style="padding: 0;">
+                                <select class="form-control pull-right" style="height: 20px; width: 80%; padding: 0" v-model="selectedDelay">
                                     <option v-for="dl in updateDelay" v-bind:value="dl.ms" v-text="dl.text" />
                                 </select>
-							</div>
-							<div class="col-xs-1" style="padding: 0;">
-								<span v-on:click="refreshServerInfo(); refreshPlayers();" class="glyphicon glyphicon-refresh pull-right"></span>
-							</div>
-						</div>
-						<div class="panel-body">
-							<form class="form-horizontal" v-show="server.serverName">
-								<div>
-									<label class="col-xs-4 col-md-3">Hostname:</label>
-									<div class="col-xs-8 col-md-9">
-										<p v-text="server.serverName" />
-									</div>
-								</div>
-								<div>
-									<label class="col-xs-4 col-md-3">Game:</label>
-									<div class="col-xs-8 col-md-9">
-										<p v-text="server.gameDescription" />
-									</div>
-								</div>
-								<div>
-									<label class="col-xs-4 col-md-3">Version:</label>
-									<div class="col-xs-8 col-md-9">
-										<p v-text="server.gameVersion" />
-									</div>
-								</div>
-								<div>
-									<label class="col-xs-4 col-md-3">Password:</label>
-									<div class="col-xs-8 col-md-9">
-										<p v-text="server.serverName ? server.passwordProtected ? 'Yes' : 'No': ''" />
-									</div>
-								</div>
-								<div>
-									<label class="col-xs-4 col-md-3">Map:</label>
-									<div class="col-xs-8 col-md-9">
-										<p style="padding-top: 0; color: #337ab7;" id="server-map" data-type="select" v-text="server.mapName"></p>
-									</div>
-								</div>
-								<div>
-									<label class="col-xs-4 col-md-3">Maxplayers:</label>
-									<div class="col-xs-8 col-md-9">
-										<p v-text="server.maxPlayers" />
-									</div>
-								</div>
-								<div>
-									<label class="col-xs-4 col-md-3">Tags:</label>
-									<div class="col-xs-8 col-md-9">
-										<p v-text="server.serverTags ? server.serverTags.replace(',', ', ') : ''" />
-									</div>
-								</div>
-								<div> <a v-if="server.serverPort" v-bind:href="'steam://connect/' + window.location.hostname + ':' + server.serverPort" class="col-xs-4">Connect</a> </div>
-							</form>
-						</div>
-					</div>
-				</div>
-				<div class="col-xs-12 col-md-7">
-					<div class="panel panel-primary">
-						<div class="panel-heading">
-							<h3 class="panel-title">Players</h3>
-						</div>
-						<div class="table-responsive">
-							<table class="table table-hover">
-								<thead class="thead-inverse">
-									<tr>
-										<th>ID</th>
-										<th>Name</th>
-										<th class="hidden-sm hidden-xs">SteamID</th>
-										<th>Score</th>
-										<th class="hidden-sm hidden-xs">IP</th>
-										<th>Time</th>
-										<th>Ping</th>
-										<th></th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr v-for="player in _.orderBy(players, ['score', 'connectTime'], ['desc', 'desc'])" :key="player.connectTime" v-bind:class="{success: player.ping <= 150, warning: player.ping > 150 && player.ping <= 250, danger: player.ping > 250}">
-										<td v-text="player.realId" />
-										<td v-text="player.name" />
-										<td class="hidden-sm hidden-xs" v-text="player.steamId" />
-										<td v-text="player.score" />
-										<td class="hidden-sm hidden-xs" v-text="player.ipAddress" />
-										<td v-text="player.connectedTime" />
-										<td v-text="player.ping" />
-										<td>
-											<button type="button" v-on:click="playerOptions(player)" class="btn text-center icons-group" style="padding: 0;"> <span class="glyphicon glyphicon-option-vertical" aria-hidden="true"></span> </button>
-										</td>
-									</tr>
-									<tr>
-										<th>Total</th>
-										<th v-text="players.length"></th>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-xs-12">
-					<div class="panel panel-primary">
-						<div class="panel-heading">
-							<h3 class="panel-title">Console</h3>
-						</div>
-						<div class="panel-body" style="padding: 0">
-							<textarea id="console-text" readonly="readonly" draggable="false" rows="12" class="col-xs-12" style="text-align: left; background-color: #000; font-family: 'Courier New'; color: #fff; resize: none; border-width: 0px; border: none; outline-width: 0;"> </textarea>
-							<input v-on:keydown.enter="sendCommand($(event.currentTarget).val()); $(event.currentTarget).val('')" class="col-xs-12" type="text" style="background-color: #000; font-family: 'Courier New'; color: #fff; border-width: 0px; border: none; outline-width: 0;" placeholder=">"> </div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div id="player-options-content" v-show="false">
-			<div class="btn-group-vertical" style="width: 100%" role="group">
-				<button v-on:click="askInput('Send message to '+selectedPlayer.name, function(input) {sendCommand(('sm_psay #'+selectedPlayer.realId+' '+input));})" type="button" class="btn btn-success">Send private message</button>
-				<button v-on:click="sendCommand('sm_mute #'+selectedPlayer.realId)" type="button" class="btn btn-primary">Mute</button>
-				<button v-on:click="sendCommand('sm_unmute #'+selectedPlayer.realId)" type="button" class="btn btn-primary">Unmute</button>
-				<button v-on:click="sendCommand('sm_slay #'+selectedPlayer.realId)" type="button" class="btn btn-warning">Kill</button>
-				<button v-on:click="askInput('Kick '+selectedPlayer.name, function(input) {sendCommand('sm_kick #'+selectedPlayer.realId);})" type="button" class="btn btn-danger">Kick</button>
-				<button v-on:click="askInput('Ban '+selectedPlayer.name, function(input) {endCommand('sm_ban #'+selectedPlayer.realId)})" type="button" class="btn btn-danger">Ban</button>
-			</div>
-		</div>
-		<div id="login-content" v-show="false">
-			<form v-on:submit.prevent>
-				<div class="form-group" v-bind:class="{'has-error': login.authError}">
-					<label for="rpassword" class="control-label">* RCON password:</label>
-					<input v-model="login.rconPassword" id="rpassword" type="password" class="form-control"> </div>
-				<div class="form-group">
-					<label for="port" class="control-label">Server port:</label>
-					<input v-model="login.serverPort" id="port" type="text" placeholder="27015" class="form-control"> </div>
-				<button v-on:click="authenticate" v-attr="{disabled: login.rconPassword}" type="submit" class="btn btn-primary">Go!</button>
-			</form>
-		</div>
-	</div>
-	<script type="text/javascript">
-		$.fn.editable.defaults.mode = 'inline';
+                            </div>
+                            <div class="col-xs-1" style="padding: 0;">
+                                <span v-on:click="refreshServerInfo(); refreshPlayers();" class="glyphicon glyphicon-refresh pull-right"></span>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <form class="form-horizontal" v-show="server.serverName">
+                                <div>
+                                    <label class="col-xs-4 col-md-3">Hostname:</label>
+                                    <div class="col-xs-8 col-md-9">
+                                        <p v-text="server.serverName" />
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="col-xs-4 col-md-3">Game:</label>
+                                    <div class="col-xs-8 col-md-9">
+                                        <p v-text="server.gameDescription" />
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="col-xs-4 col-md-3">Version:</label>
+                                    <div class="col-xs-8 col-md-9">
+                                        <p v-text="server.gameVersion" />
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="col-xs-4 col-md-3">Password:</label>
+                                    <div class="col-xs-8 col-md-9">
+                                        <p v-text="server.passwordProtected != null ? server.passwordProtected ? 'Yes' : 'No' : ''" />
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="col-xs-4 col-md-3">Map:</label>
+                                    <div class="col-xs-8 col-md-9">
+                                        <p style="padding-top: 0; color: #337ab7;" id="server-map" data-type="select" v-text="server.mapName"></p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="col-xs-4 col-md-3">Maxplayers:</label>
+                                    <div class="col-xs-8 col-md-9">
+                                        <p v-text="server.maxPlayers" />
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="col-xs-4 col-md-3">Tags:</label>
+                                    <div class="col-xs-8 col-md-9">
+                                        <p v-text="server.serverTags ? server.serverTags.replace(',', ', ') : ''" />
+                                    </div>
+                                </div>
+                                <div> <a v-if="server.serverPort" v-bind:href="'steam://connect/' + window.location.hostname + ':' + server.serverPort" class="col-xs-4">Connect</a> </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-7">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Players</h3>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="thead-inverse">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th class="hidden-sm hidden-xs">SteamID</th>
+                                        <th>Score</th>
+                                        <th class="hidden-sm hidden-xs">IP</th>
+                                        <th>Time</th>
+                                        <th>Ping</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="player in _.orderBy(players, ['score', 'connectedTime'], ['desc', 'desc'])" :key="player.connectTime" v-bind:class="{success: player.ping <= 150, warning: player.ping > 150 && player.ping <= 250, danger: player.ping > 250}">
+                                        <td v-text="player.id" />
+                                        <td v-text="player.name" />
+                                        <td class="hidden-sm hidden-xs" v-text="player.steamId" />
+                                        <td v-text="player.score" />
+                                        <td class="hidden-sm hidden-xs">
+                                            <div class="col-xs-2" style="padding: 0;">
+                                                <img v-bind:title="player.countryName" v-bind:src="countryFlag(player.countryCode)" class="img-responsive" style="float: none; display: inline-flex; vertical-align: middle;" />
+                                            </div>
+                                            <div class="col-xs-10" style="padding-right: 0; padding-left: 4px;">
+                                                {{player.ipAddress}}
+                                            </div>
+                                            <td v-text="player.formatedTime" />
+                                            <td v-text="player.ping" />
+                                            <td>
+                                                <button type="button" v-on:click="playerOptions(player)" class="btn text-center icons-group" style="padding: 0;"> <span class="glyphicon glyphicon-option-vertical" aria-hidden="true"></span> </button>
+                                            </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total</th>
+                                        <th v-text="players.length"></th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Console</h3>
+                        </div>
+                        <div class="panel-body" style="padding: 0">
+                            <textarea id="console-text" readonly="readonly" draggable="false" rows="12" class="col-xs-12" style="text-align: left; background-color: #000; font-family: 'Courier New '; color: #fff; resize: none; border-width: 0px; border: none; outline-width: 0;"> </textarea>
+                            <input v-on:keydown.enter="sendCommand($(event.currentTarget).val()); $(event.currentTarget).val('')" class="col-xs-12" type="text" style="background-color: #000; font-family: 'Courier New '; color: #fff; border-width: 0px; border: none; outline-width: 0;" placeholder=">"> </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="player-options-content" v-show="false">
+            <div class="btn-group-vertical" style="width: 100%" role="group">
+                <button v-on:click="askInput('Send message to '+selectedPlayer.name, function(input) {sendCommand(('sm_psay # '+selectedPlayer.realId+' '+input));})" type="button" class="btn btn-success">Send private message</button>
+                <button v-on:click="sendCommand('sm_mute # '+selectedPlayer.realId)" type="button" class="btn btn-primary">Mute</button>
+                <button v-on:click="sendCommand('sm_unmute # '+selectedPlayer.realId)" type="button" class="btn btn-primary">Unmute</button>
+                <button v-on:click="sendCommand('sm_slay # '+selectedPlayer.realId)" type="button" class="btn btn-warning">Kill</button>
+                <button v-on:click="askInput('Kick '+selectedPlayer.name, function(input) {sendCommand('sm_kick # '+selectedPlayer.realId);})" type="button" class="btn btn-danger">Kick</button>
+                <button v-on:click="askInput('Ban '+selectedPlayer.name, function(input) {endCommand('sm_ban # '+selectedPlayer.realId)})" type="button" class="btn btn-danger">Ban</button>
+            </div>
+        </div>
+        <div id="login-content" v-show="false">
+            <form v-on:submit.prevent>
+                <div class="form-group" v-bind:class="{'has-error': login.authError}">
+                    <label for="rpassword" class="control-label">* RCON password:</label>
+                    <input v-model="login.rconPassword" id="rpassword" type="password" class="form-control"> </div>
+                <div class="form-group">
+                    <label for="port" class="control-label">Server port:</label>
+                    <input v-model="login.serverPort" id="port" type="text" placeholder="27015" class="form-control"> </div>
+                <button v-on:click="authenticate" v-attr="{disabled: login.rconPassword}" type="submit" class="btn btn-primary">Go!</button>
+            </form>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $.fn.editable.defaults.mode = 'inline';
 
-		$(document).ready(function() {
+        $(document).ready(function () {
 
-			$.get("authenticated", function(authenticated) {
-				if (authenticated) {
-					afterAuth();
-				} else {
-					openAuthDialog();
-				}
-			});
-		});
-		var vm = new Vue({
-			el: "#app",
-			data: {
-				login: {
-					authError: false,
-					authenticated: false,
-					rconPassword: '',
-					serverPort: ''
-				},
-				autoUpdate: true,
-				selectedDelay: 10000,
-				updateDelay: [{
-					ms: 10000,
-					text: "10 secs"
+            $.get("authenticated", function (authenticated) {
+                if (authenticated) {
+                    afterAuth();
+                } else {
+                    openAuthDialog();
+                }
+            });
+        });
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                login: {
+                    authError: false,
+                    authenticated: false,
+                    rconPassword: '',
+                    serverPort: ''
+                },
+                autoUpdate: true,
+                selectedDelay: 10000,
+                updateDelay: [{
+                    ms: 10000,
+                    text: "10 secs"
 				}, {
-					ms: 20000,
-					text: "20 secs"
+                    ms: 20000,
+                    text: "20 secs"
 				}, {
-					ms: 30000,
-					text: "30 secs"
+                    ms: 30000,
+                    text: "30 secs"
 				}, {
-					ms: 60000,
-					text: "60 secs"
+                    ms: 60000,
+                    text: "60 secs"
 				}, ],
-				server: {},
-				selectedPlayer: {},
-				players: [],
-				mapList: [],
-			},
-			methods: {
-				authenticate: function() {
-					$.get('auth', {
-						rconPassword: vm.login.rconPassword,
-						serverPort: vm.login.serverPort
-					}, function(data) {
-						vm.login.rconPassword = null;
-						vm.login.authError = false;
-						loginDialog.close();
-						afterAuth();
-					}).fail(function() {
-						vm.login.authError = true;
-					});
-				},
-				refreshServerInfo: function() {
-					var self = this;
-					$.getJSON("serverInfo", function(data) {
-						vm.server = data;
-						$("#server-map").editable('setValue', vm.server.map);
-					});
-				},
-				refreshPlayers: function() {
-					$.getJSON("players", function(data) {
-						vm.players = data;
-					});
-				},
-				sendCommand: function(command, callback) {
-					$.get("sendCommand", {
-						command: command
-					}, function(data) {
-						callback(data);
-						console.log(data);
-					});
-				},
-				playerOptions: function(player) {
-					BootstrapDialog.show({
-						type: BootstrapDialog.TYPE_PRIMARY,
-						title: player.name,
-						size: BootstrapDialog.SIZE_SMALL,
-						message: $('#player-options-content').show(),
-						autodestroy: false,
-						onshow: function(dialogRef) {
-							vm.selectedPlayer = player;
-						},
-						onhide: function(dialogRef) {
-							vm.selectedPlayer = null;
-						},
-					});
-				},
-				askInput: function(title, callback) {
-					BootstrapDialog.show({
-						type: BootstrapDialog.TYPE_PRIMARY,
-						title: title,
-						size: BootstrapDialog.SIZE_SMALL,
-						message: '<input type="text" class="form-control">',
-						onhide: function(dialogRef) {
-							var input = dialogRef.getModalBody().find('input').val();
-							if (input) {
-								callback(input);
-							}
-						},
-						buttons: [{
-							label: 'Ok',
-							action: function(dialogRef) {
-								dialogRef.close();
-							}
-						}]
-					});
-				}
-			}
-		});
-		var loginDialog;
+                server: {},
+                selectedPlayer: {},
+                playersResponseDate: null,
+                players: [],
+                mapList: [],
+            },
+            methods: {
+                countryFlag: function (countryCode) {
+                    if (countryCode) {
+                        return 'https://raw.githubusercontent.com/hjnilsson/country-flags/master/png250px/' + countryCode.toLowerCase() + '.png';
+                    }
+                },
+                authenticate: function () {
+                    $.get('auth', {
+                        rconPassword: vm.login.rconPassword,
+                        serverPort: vm.login.serverPort
+                    }, function (data) {
+                        vm.login.rconPassword = null;
+                        vm.login.authError = false;
+                        loginDialog.close();
+                        afterAuth();
+                    }).fail(function () {
+                        vm.login.authError = true;
+                    });
+                },
+                refreshServerInfo: function () {
+                    var self = this;
+                    $.getJSON("serverInfo", function (data) {
+                        vm.server = data;
+                        $("#server-map").editable('setValue', vm.server.map);
+                    });
+                },
+                refreshPlayers: function () {
+                    $.getJSON("players", function (data) {
+                        vm.players = data;
+                        vm.playersResponseDate = new Date();
+                        formatPlayerTime();
+                    });
+                },
+                sendCommand: function (command, callback) {
+                    $.get("sendCommand", {
+                        command: command
+                    }, function (data) {
+                        callback(data);
+                        console.log(data);
+                    });
+                },
+                playerOptions: function (player) {
+                    BootstrapDialog.show({
+                        type: BootstrapDialog.TYPE_PRIMARY,
+                        title: player.name,
+                        size: BootstrapDialog.SIZE_SMALL,
+                        message: $('#player-options-content').show(),
+                        autodestroy: false,
+                        onshow: function (dialogRef) {
+                            vm.selectedPlayer = player;
+                        },
+                        onhide: function (dialogRef) {
+                            vm.selectedPlayer = null;
+                        },
+                    });
+                },
+                askInput: function (title, callback) {
+                    BootstrapDialog.show({
+                        type: BootstrapDialog.TYPE_PRIMARY,
+                        title: title,
+                        size: BootstrapDialog.SIZE_SMALL,
+                        message: '<input type="text" class="form-control">',
+                        onhide: function (dialogRef) {
+                            var input = dialogRef.getModalBody().find('input').val();
+                            if (input) {
+                                callback(input);
+                            }
+                        },
+                        buttons: [{
+                            label: 'Ok',
+                            action: function (dialogRef) {
+                                dialogRef.close();
+                            }
+                        }]
+                    });
+                }
+            }
+        });
+        var loginDialog;
 
-		function openAuthDialog() {
-			loginDialog = BootstrapDialog.show({
-				type: BootstrapDialog.TYPE_SUCCESS,
-				title: 'Login on server',
-				size: BootstrapDialog.SIZE_SMALL,
-				message: $('#login-content').show(),
-				autodestroy: false,
-				closable: false,
-				closeByBackdrop: false,
-				closeByKeyboard: false,
-				onshown: function() {
-					$('#rpassword').focus();
-				}
-			});
-		}
+        function openAuthDialog() {
+            loginDialog = BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_SUCCESS,
+                title: 'Login on server',
+                size: BootstrapDialog.SIZE_SMALL,
+                message: $('#login-content').show(),
+                autodestroy: false,
+                closable: false,
+                closeByBackdrop: false,
+                closeByKeyboard: false,
+                onshown: function () {
+                    $('#rpassword').focus();
+                }
+            });
+        }
 
-		function refreshData() {
-			setTimeout(function() {
-				if (vm.autoUpdate) {
-					vm.refreshServerInfo();
-					vm.refreshPlayers();
-				}
-				refreshData();
-			}, vm.selectedDelay);
-		}
+        function refreshData() {
+            setTimeout(function () {
+                if (vm.autoUpdate) {
+                    vm.refreshServerInfo();
+                    vm.refreshPlayers();
+                }
+                refreshData();
+            }, vm.selectedDelay);
+        }
 
-		function loadMaps() {
-			vm.sendCommand('listmaps', function(response) {
-				var result = response.split('\n');
-				_.pullAt(result, 0);
-				vm.mapList = result;
+        function loadMaps() {
+            vm.sendCommand('listmaps', function (response) {
+                var result = response.split('\n');
+                _.pullAt(result, 0);
+                vm.mapList = result;
+                $("#server-map").editable({
+                    value: vm.server.mapName,
+                    source: vm.mapList,
+                    url: function (params) {
+                        var d = new $.Deferred();
+                        $.get("sendCommand", {
+                            command: 'changelevel' + params.value
+                        }, function (data) {
+                            d.resolve();
+                        }).fail(function (e) {
+                            d.reject(e);
+                        });
+                        return d.promise();
+                    }
+                });
+            });
+        }
 
-				$("#server-map").editable({
-					value: vm.server.mapName,
-					source: vm.mapList,
-					url: function(params) {
-						var d = new $.Deferred();
-						$.get("sendCommand", {
-							command: 'changelevel ' + params.value
-						}, function(data) {
-							d.resolve();
-						}).fail(function(e) {
-							d.reject(e);
-						});
-						return d.promise();
-					}
-				});
-			});
-		}
+        function afterAuth() {
+            loadMaps();
+            setUpFormatTimeInterval();
+            vm.login.authenticated = true;
+            vm.refreshServerInfo();
+            vm.refreshPlayers();
+            refreshData();
+            var $console = $("#console-text");
+            var stompClient = Stomp.over(new SockJS("/ws"));
+            stompClient.connect({}, function (frame) {
+                stompClient.subscribe("/topic/console", function (data) {
+                    var message = data.body;
+                    var currText = $console.text();
+                    currText = currText.substr(currText.length - 10000)
+                    $console.text(currText + "\n" + message);
+                    $console.scrollTop($console.get(0).scrollHeight);
+                });
+            });
+        }
 
-		function afterAuth() {
+        function formatPlayerTime() {
+            $.each(vm.players, function (i, player) {
+                var ms = moment().add(player.connectedTime, 's').diff(moment(vm.playersResponseDate));
+                var d = moment.duration(ms);
+                var formatedTime = moment(new Date(1970, 1, 1, 0, 0, 0, d)).format("HH:mm:ss");
 
-			loadMaps();
+                player.formatedTime = formatedTime;
+                vm.players.splice(i, 1, player)
+            });
+        }
 
-			vm.login.authenticated = true;
-			vm.refreshServerInfo();
-			vm.refreshPlayers();
-			refreshData();
-			var $console = $("#console-text");
-			var stompClient = Stomp.over(new SockJS("/ws"));
-			stompClient.connect({}, function(frame) {
-				stompClient.subscribe("/topic/console", function(data) {
-					var message = data.body;
-					var currText = $console.text();
-					$console.text(currText + "\n" + message);
-					$console.scrollTop($console.get(0).scrollHeight);
-				});
-			});
-		}
-
-	</script>
+        function setUpFormatTimeInterval() {
+            setInterval(function () {
+                formatPlayerTime();
+            }, 500);
+        }
+    </script>
 </body>
 
 </html>

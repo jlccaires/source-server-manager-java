@@ -1,6 +1,8 @@
 package com.jlccaires.sourcemanager.controller;
 
 import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
+import com.jlccaires.sourcemanager.domain.Player;
+import com.jlccaires.sourcemanager.service.GeoIPService;
 import com.jlccaires.sourcemanager.service.ServerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

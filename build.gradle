@@ -38,4 +38,5 @@ dependencies {
 	compile('com.github.koraktor:steam-condenser:1.3.9')
 	compile group: 'commons-io', name: 'commons-io', version: '2.5'
 	compile group: 'net.sourceforge.nekohtml', name: 'nekohtml', version: '1.9.22'
+    compile 'com.maxmind.geoip2:geoip2:2.8.0'
 }
