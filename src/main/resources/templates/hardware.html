@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>Source Server Manager</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css" rel="stylesheet" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.3/vue.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+</head>
+
+<body>
+    <div id="app" class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="panel panel-primary container-fluid">
+                    <div class="panel-heading row">
+                        <div class="col-xs-3 col-md-5" style="padding: 0;">
+                            <h3 class="panel-title">Hardware</h3>
+                        </div>
+                    </div>
+                    <div class="panel-body row">
+                        <div class="col-xs-12 col-md-3">
+                            <div id="cpu_gauge"></div>
+                        </div>
+                        <div class="col-xs-12 col-md-3">
+                            <div id="mem_gauge"></div>
+                        </div>
+                        <div class="col-xs-12 col-md-6">
+                            <div id="disk_line"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        google.charts.load('current', {
+            'packages': ['gauge', 'corechart', 'line']
+        });
+        google.charts.setOnLoadCallback(function () {
+            var options = {
+                width: '100%',
+                height: '100%',
+                redFrom: 90,
+                redTo: 100,
+                yellowFrom: 70,
+                yellowTo: 90,
+                minorTicks: 5,
+                allowHtml: true
+            };
+
+            var cpuChart = new google.visualization.Gauge($('#cpu_gauge')[0]);
+            var formatter = new google.visualization.NumberFormat({
+                suffix: '%',
+                fractionDigits: 0
+            });
+
+            var cpuAjax = function () {
+                $.getJSON("/cpu", function (response) {
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string');
+                    data.addColumn('number');
+                    data.addRow(['CPU', parseInt(Math.floor(response.systemCpuLoad * 100))]);
+                    formatter.format(data, 1);
+                    cpuChart.draw(data, options);
+                    setTimeout(cpuAjax, 3000);
+                });
+            };
+            cpuAjax();
+
+            var memChart = new google.visualization.Gauge($('#mem_gauge')[0]);
+
+            var memAjax = function () {
+                $.getJSON("/mem", function (response) {
+
+                    var total = response.total;
+                    var available = response.available;
+
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string');
+                    data.addColumn('number');
+                    data.addRow(['Memory', parseInt(available / total * 100)]);
+                    formatter.format(data, 1);
+                    memChart.draw(data, options);
+                    setTimeout(memAjax, 5000);
+                });
+            };
+            memAjax();
+
+            var diskChart = new google.visualization.LineChart($('#disk_line')[0]);
+            var diskData = new google.visualization.DataTable();
+            diskData.addColumn('datetime', 'Time');
+            diskData.addColumn('number', 'Read');
+            diskData.addColumn('number', 'Write');
+
+            var diskOptions = {
+                title: 'Disk',
+                width: '100%',
+                height: '500px',
+                colors: ['blue', 'red'],
+                legend: 'right',
+                hAxis: {
+                    format: 'HH:mm:ss'
+                },
+                vAxis: {
+                    suffix: ' MB',
+                    minValue: 0
+                }
+            };
+
+            var mbFormatter = new google.visualization.NumberFormat({
+                suffix: ' MB',
+                fractionDigits: 2
+            });
+
+            var lastReadBytes;
+            var lastWriteBytes;
+
+            var diskAjax = function () {
+                $.getJSON("/disk", function (response) {
+
+                    if (diskData.getNumberOfRows() > 20) {
+                        diskData.removeRow(0);
+                    }
+
+                    response = response[0];
+                    var size = response.size / 1024 / 1024 / 1024; //GB
+                    var readBytes = response.readBytes / 1024 / 1024; //MB
+                    var writeBytes = response.writeBytes / 1024 / 1024; //MB
+
+                    if (lastReadBytes) {
+                        diskData.addRow([new Date(), readBytes - lastReadBytes, writeBytes - lastWriteBytes]);
+                    }
+
+                    lastReadBytes = readBytes;
+                    lastWriteBytes = writeBytes;
+
+                    mbFormatter.format(diskData, 1);
+                    mbFormatter.format(diskData, 2);
+                    diskChart.draw(diskData, diskOptions);
+                    setTimeout(diskAjax, 1000);
+                });
+            };
+            diskAjax();
+
+        });
+
+        $(document).ready(function () {
+
+        });
+
+        var vm = new Vue({
+            el: "#app",
+            data: {},
+            methods: {}
+        });
+    </script>
+</body>
+
+</html>

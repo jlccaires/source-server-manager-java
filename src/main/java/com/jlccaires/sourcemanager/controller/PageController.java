@@ -12,4 +12,9 @@ public class PageController {
 		return "index";
 	}
 
+	@RequestMapping("/hardware")
+	public String hardware() {
+		return "hardware";
+	}
+
 }
