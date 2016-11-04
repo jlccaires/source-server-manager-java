@@ -108,7 +108,7 @@
                     format: 'HH:mm:ss'
                 },
                 vAxis: {
-                    suffix: ' MB',
+                    format: "#.##'MB'",
                     minValue: 0
                 }
             };
@@ -116,6 +116,10 @@
             var mbFormatter = new google.visualization.NumberFormat({
                 suffix: ' MB',
                 fractionDigits: 2
+            });
+
+            var dateFormat = new google.visualization.DateFormat({
+                pattern: 'HH:mm:ss'
             });
 
             var lastReadBytes;
@@ -140,6 +144,7 @@
                     lastReadBytes = readBytes;
                     lastWriteBytes = writeBytes;
 
+                    dateFormat.format(diskData, 0);
                     mbFormatter.format(diskData, 1);
                     mbFormatter.format(diskData, 2);
                     diskChart.draw(diskData, diskOptions);
