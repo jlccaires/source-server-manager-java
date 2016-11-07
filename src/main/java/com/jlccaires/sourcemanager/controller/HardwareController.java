@@ -34,9 +34,9 @@ public class HardwareController {
     }
 
     @GetMapping("/net")
-    public Object net() {
+    public Object net(final Integer index) {
         synchronized (systemInfo) {
-            return systemInfo.getHardware().getNetworkIFs();
+            return systemInfo.getHardware().getNetworkIFs()[0];
         }
     }
 
