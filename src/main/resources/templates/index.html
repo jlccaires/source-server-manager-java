@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
@@ -11,6 +11,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.3/vue.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/vue-router@2.0.1"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.16.4/lodash.min.js"></script>
     <script type="text/javascript" src="https:////cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
@@ -21,10 +22,11 @@
 
 <body>
     <div id="app" class="container">
+        <div th:include="fragments/navbar" th:remove="tag"></div>
         <div v-show="login.authenticated">
             <div class="row">
                 <div class="col-xs-12 col-md-5">
-                    <div class="panel panel-primary container-fluid">
+                    <div class="panel panel-default container-fluid">
                         <div class="panel-heading row">
                             <div class="col-xs-3 col-md-5" style="padding: 0;">
                                 <h3 class="panel-title">Server Info</h3>
@@ -88,13 +90,13 @@
                                         <p v-text="server.serverTags ? server.serverTags.replace(',', ', ') : ''" />
                                     </div>
                                 </div>
-                                <div> <a v-if="server.serverPort" v-bind:href="'steam://connect/' + window.location.hostname + ':' + server.serverPort" class="col-xs-4">Connect</a> </div>
+                                <div><a v-if="server.serverPort" v-bind:href="'steam://connect/' + window.location.hostname + ':' + server.serverPort" class="col-xs-4">Connect</a></div>
                             </form>
                         </div>
                     </div>
                 </div>
                 <div class="col-xs-12 col-md-7">
-                    <div class="panel panel-primary">
+                    <div class="panel panel-default">
                         <div class="panel-heading">
                             <h3 class="panel-title">Players</h3>
                         </div>
@@ -128,7 +130,8 @@
                                             <td v-text="player.formatedTime" />
                                             <td v-text="player.ping" />
                                             <td>
-                                                <button type="button" v-on:click="playerOptions(player)" class="btn text-center icons-group" style="padding: 0;"> <span class="glyphicon glyphicon-option-vertical" aria-hidden="true"></span> </button>
+                                                <button type="button" v-on:click="playerOptions(player)" class="btn text-center icons-group" style="padding: 0;"><span class="glyphicon glyphicon-option-vertical" aria-hidden="true"></span>
+                                                </button>
                                             </td>
                                     </tr>
                                     <tr>
@@ -143,51 +146,42 @@
             </div>
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="panel panel-primary">
+                    <div class="panel panel-default">
                         <div class="panel-heading">
                             <h3 class="panel-title">Console</h3>
                         </div>
                         <div class="panel-body" style="padding: 0">
-                            <textarea id="console-text" readonly="readonly" draggable="false" rows="12" class="col-xs-12" style="text-align: left; background-color: #000; font-family: 'Courier New '; color: #fff; resize: none; border-width: 0px; border: none; outline-width: 0;"> </textarea>
-                            <input v-on:keydown.enter="sendCommand($(event.currentTarget).val()); $(event.currentTarget).val('')" class="col-xs-12" type="text" style="background-color: #000; font-family: 'Courier New '; color: #fff; border-width: 0px; border: none; outline-width: 0;" placeholder=">"> </div>
+                            <textarea id="console-text" readonly="readonly" draggable="false" rows="12" class="col-xs-12" style="text-align: left; background-color: #000; font-family: 'Courier New'; color: #fff; resize: none; border-width: 0px; border: none; outline-width: 0;" v-on:click="$('#command_input').focus()"></textarea>
+                            <input id="command_input" v-on:keydown.enter="sendCommand($(event.currentTarget).val()); $(event.currentTarget).val('')" class="col-xs-12" type="text" style="background-color: #000; font-family: 'Courier New'; color: #fff; border-width: 0px; border: none; outline-width: 0;" placeholder=">">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <div id="player-options-content" v-show="false">
             <div class="btn-group-vertical" style="width: 100%" role="group">
-                <button v-on:click="askInput('Send message to '+selectedPlayer.name, function(input) {sendCommand(('sm_psay # '+selectedPlayer.realId+' '+input));})" type="button" class="btn btn-success">Send private message</button>
-                <button v-on:click="sendCommand('sm_mute # '+selectedPlayer.realId)" type="button" class="btn btn-primary">Mute</button>
-                <button v-on:click="sendCommand('sm_unmute # '+selectedPlayer.realId)" type="button" class="btn btn-primary">Unmute</button>
-                <button v-on:click="sendCommand('sm_slay # '+selectedPlayer.realId)" type="button" class="btn btn-warning">Kill</button>
-                <button v-on:click="askInput('Kick '+selectedPlayer.name, function(input) {sendCommand('sm_kick # '+selectedPlayer.realId);})" type="button" class="btn btn-danger">Kick</button>
-                <button v-on:click="askInput('Ban '+selectedPlayer.name, function(input) {endCommand('sm_ban # '+selectedPlayer.realId)})" type="button" class="btn btn-danger">Ban</button>
+                <button v-on:click="askInput('Send message to '+selectedPlayer.name, function(input) {sendCommand(('sm_psay # '+selectedPlayer.realId+' '+input));})" type="button" class="btn btn-success">Send private message
+                </button>
+                <button v-on:click="sendCommand('sm_mute # '+selectedPlayer.realId)" type="button" class="btn btn-primary">
+                    Mute
+                </button>
+                <button v-on:click="sendCommand('sm_unmute # '+selectedPlayer.realId)" type="button" class="btn btn-primary">Unmute
+                </button>
+                <button v-on:click="sendCommand('sm_slay # '+selectedPlayer.realId)" type="button" class="btn btn-warning">
+                    Kill
+                </button>
+                <button v-on:click="askInput('Kick '+selectedPlayer.name, function(input) {sendCommand('sm_kick # '+selectedPlayer.realId);})" type="button" class="btn btn-danger">Kick
+                </button>
+                <button v-on:click="askInput('Ban '+selectedPlayer.name, function(input) {endCommand('sm_ban # '+selectedPlayer.realId)})" type="button" class="btn btn-danger">Ban
+                </button>
             </div>
-        </div>
-        <div id="login-content" v-show="false">
-            <form v-on:submit.prevent>
-                <div class="form-group" v-bind:class="{'has-error': login.authError}">
-                    <label for="rpassword" class="control-label">* RCON password:</label>
-                    <input v-model="login.rconPassword" id="rpassword" type="password" class="form-control"> </div>
-                <div class="form-group">
-                    <label for="port" class="control-label">Server port:</label>
-                    <input v-model="login.serverPort" id="port" type="text" placeholder="27015" class="form-control"> </div>
-                <button v-on:click="authenticate" v-attr="{disabled: login.rconPassword}" type="submit" class="btn btn-primary">Go!</button>
-            </form>
         </div>
     </div>
     <script type="text/javascript">
         $.fn.editable.defaults.mode = 'inline';
 
         $(document).ready(function () {
-
-            $.get("authenticated", function (authenticated) {
-                if (authenticated) {
-                    afterAuth();
-                } else {
-                    openAuthDialog();
-                }
-            });
+            init();
         });
         var vm = new Vue({
             el: "#app",
@@ -225,19 +219,6 @@
                         return 'https://raw.githubusercontent.com/hjnilsson/country-flags/master/png250px/' + countryCode.toLowerCase() + '.png';
                     }
                 },
-                authenticate: function () {
-                    $.get('auth', {
-                        rconPassword: vm.login.rconPassword,
-                        serverPort: vm.login.serverPort
-                    }, function (data) {
-                        vm.login.rconPassword = null;
-                        vm.login.authError = false;
-                        loginDialog.close();
-                        afterAuth();
-                    }).fail(function () {
-                        vm.login.authError = true;
-                    });
-                },
                 refreshServerInfo: function () {
                     var self = this;
                     $.getJSON("serverInfo", function (data) {
@@ -256,7 +237,9 @@
                     $.get("sendCommand", {
                         command: command
                     }, function (data) {
-                        callback(data);
+                        if (callback) {
+                            callback(data);
+                        }
                         console.log(data);
                     });
                 },
@@ -283,7 +266,7 @@
                         message: '<input type="text" class="form-control">',
                         onhide: function (dialogRef) {
                             var input = dialogRef.getModalBody().find('input').val();
-                            if (input) {
+                            if (input && callback) {
                                 callback(input);
                             }
                         },
@@ -297,23 +280,6 @@
                 }
             }
         });
-        var loginDialog;
-
-        function openAuthDialog() {
-            loginDialog = BootstrapDialog.show({
-                type: BootstrapDialog.TYPE_SUCCESS,
-                title: 'Login on server',
-                size: BootstrapDialog.SIZE_SMALL,
-                message: $('#login-content').show(),
-                autodestroy: false,
-                closable: false,
-                closeByBackdrop: false,
-                closeByKeyboard: false,
-                onshown: function () {
-                    $('#rpassword').focus();
-                }
-            });
-        }
 
         function refreshData() {
             setTimeout(function () {
@@ -336,7 +302,7 @@
                     url: function (params) {
                         var d = new $.Deferred();
                         $.get("sendCommand", {
-                            command: 'changelevel' + params.value
+                            command: 'changelevel ' + params.value
                         }, function (data) {
                             d.resolve();
                         }).fail(function (e) {
@@ -348,7 +314,7 @@
             });
         }
 
-        function afterAuth() {
+        function init() {
             loadMaps();
             setUpFormatTimeInterval();
             vm.login.authenticated = true;

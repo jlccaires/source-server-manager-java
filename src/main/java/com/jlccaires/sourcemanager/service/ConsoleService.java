@@ -1,14 +1,13 @@
 package com.jlccaires.sourcemanager.service;
 
-import java.io.File;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-
 import org.apache.commons.io.input.Tailer;
 import org.apache.commons.io.input.TailerListenerAdapter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import java.io.File;
 
 @Service
 public class ConsoleService {
@@ -20,6 +19,7 @@ public class ConsoleService {
 
 	@PostConstruct
 	public void console() {
+
 		final File log = new File(logFile);
 		if (logFile.isEmpty() || !log.exists()) {
 			return;

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
@@ -15,9 +15,10 @@
 
 <body>
     <div id="app" class="container">
+        <div th:include="fragments/navbar" th:remove="tag"></div>
         <div class="row">
             <div class="col-xs-12">
-                <div class="panel panel-primary container-fluid">
+                <div class="panel panel-default container-fluid">
                     <div class="panel-heading row">
                         <div class="col-xs-3 col-md-5" style="padding: 0;">
                             <h3 class="panel-title">Hardware</h3>
@@ -183,7 +184,7 @@
                     mbFormatter.format(diskData, 1);
                     mbFormatter.format(diskData, 2);
                     diskChart.draw(diskData, diskOptions);
-                    setTimeout(diskAjax, 1000);
+                    setTimeout(diskAjax, 2000);
                 });
             };
             diskAjax();
@@ -244,7 +245,7 @@
                     mbFormatter.format(netData, 1);
                     mbFormatter.format(netData, 2);
                     netChart.draw(netData, netOptions);
-                    setTimeout(netAjax, 1000);
+                    setTimeout(netAjax, 2000);
                 });
             };
             netAjax();

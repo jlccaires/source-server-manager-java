@@ -4,16 +4,15 @@ import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
 import com.github.koraktor.steamcondenser.steam.SteamPlayer;
 import com.github.koraktor.steamcondenser.steam.servers.SourceServer;
 import com.jlccaires.sourcemanager.domain.Player;
-import com.maxmind.geoip2.exception.GeoIp2Exception;
+import com.jlccaires.sourcemanager.domain.ServerDetails;
 import com.maxmind.geoip2.record.Country;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.annotation.SessionScope;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +22,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
-@SessionScope
 public class ServerService {
 
     private static final String TOPIC_CONSOLE = "/topic/console";
@@ -39,21 +37,14 @@ public class ServerService {
     @Value("${server.source.address:127.0.0.1}")
     private String serverAddress;
 
-    private int serverPort;
-    private String rconPassword;
-    private boolean authenticated = false;
-
     public boolean auth(int serverPort, String rconPassword)
             throws SteamCondenserException, TimeoutException {
-        this.serverPort = serverPort;
-        this.rconPassword = rconPassword;
 
-        SourceServer server = getServer(true);
-        if (server != null) {
+        SourceServer server = new SourceServer(serverAddress, serverPort);
+        try {
+            return server.rconAuth(rconPassword);
+        } finally {
             server.disconnect();
-            return authenticated = true;
-        } else {
-            return false;
         }
     }
 
@@ -140,11 +131,14 @@ public class ServerService {
     }
 
     private SourceServer getServer(boolean withRconAuth) throws SteamCondenserException, TimeoutException {
-        SourceServer server = new SourceServer(serverAddress, serverPort);
+
+        ServerDetails serverDetails = (ServerDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        SourceServer server = new SourceServer(serverAddress, serverDetails.port);
         if (!withRconAuth) {
             return server;
         }
-        if (server.rconAuth(rconPassword)) {
+        if (server.rconAuth(serverDetails.rconPassword)) {
             return server;
         }
         return null;
@@ -153,13 +147,8 @@ public class ServerService {
     @PostConstruct
     private void console() {
         consoleService.setLogListener(line -> {
-            if (isAuthenticated()) {
-                messagingTemplate.convertAndSend(TOPIC_CONSOLE, line);
-            }
+            messagingTemplate.convertAndSend(TOPIC_CONSOLE, line);
         });
     }
 
-    public boolean isAuthenticated() {
-        return authenticated;
-    }
 }

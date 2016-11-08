@@ -1,5 +1,6 @@
 package com.jlccaires.sourcemanager.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import oshi.SystemInfo;
@@ -7,6 +8,7 @@ import oshi.SystemInfo;
 /**
  * @author jlccaires - Julio Cesar Caires | 04/11/2016 - 08:31
  */
+@PreAuthorize("isAuthenticated()")
 @RestController
 public class HardwareController {
 
