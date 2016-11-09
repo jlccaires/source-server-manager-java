@@ -40,7 +40,7 @@ public class ServerService {
     public boolean auth(int serverPort, String rconPassword)
             throws SteamCondenserException, TimeoutException {
 
-        SourceServer server = new SourceServer(serverAddress, serverPort);
+        final SourceServer server = new SourceServer(serverAddress, serverPort);
         try {
             return server.rconAuth(rconPassword);
         } finally {
@@ -49,7 +49,7 @@ public class ServerService {
     }
 
     public HashMap<String, Object> getServerInfo() throws SteamCondenserException, TimeoutException {
-        SourceServer server = getServer(true);
+        final SourceServer server = getServer(true);
         if (server == null) {
             return new HashMap<>();
         }
@@ -61,7 +61,7 @@ public class ServerService {
     }
 
     public List<Player> getPlayers() throws SteamCondenserException, TimeoutException {
-        SourceServer server = getServer(true);
+        final SourceServer server = getServer(true);
         if (server == null) {
             return new ArrayList<>();
         }
@@ -77,7 +77,7 @@ public class ServerService {
 
         final List<Player> players = new ArrayList<>();
         for (String pLine : pStringArray) {
-            Matcher matcher = pPlayers.matcher(pLine);
+            final Matcher matcher = pPlayers.matcher(pLine);
             if (matcher.find()) {
                 final Player player = new Player();
                 player.setId(Integer.parseInt(matcher.group(1)));
@@ -98,7 +98,7 @@ public class ServerService {
                 player.setIpAddress(matcher.group(8));
 
                 try {
-                    Country country = ipService.countryCodeBy(player.getIpAddress());
+                    final Country country = ipService.countryCodeBy(player.getIpAddress());
                     player.setCountryCode(country.getIsoCode());
                     player.setCountryName(country.getName());
                 } catch (Exception e) {
@@ -106,7 +106,7 @@ public class ServerService {
                 }
 
                 if (playersHash != null) {
-                    SteamPlayer steamPlayer = playersHash.get(player.getName());
+                    final SteamPlayer steamPlayer = playersHash.get(player.getName());
                     if (steamPlayer != null) {
                         player.setScore(steamPlayer.getScore());
                     }
@@ -119,7 +119,7 @@ public class ServerService {
     }
 
     public String sendCommand(String command) throws TimeoutException, SteamCondenserException {
-        SourceServer server = getServer(true);
+        final SourceServer server = getServer(true);
         if (server == null) {
             return null;
         }
@@ -132,9 +132,8 @@ public class ServerService {
 
     private SourceServer getServer(boolean withRconAuth) throws SteamCondenserException, TimeoutException {
 
-        ServerDetails serverDetails = (ServerDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        SourceServer server = new SourceServer(serverAddress, serverDetails.port);
+        final ServerDetails serverDetails = (ServerDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        final SourceServer server = new SourceServer(serverAddress, serverDetails.port);
         if (!withRconAuth) {
             return server;
         }
