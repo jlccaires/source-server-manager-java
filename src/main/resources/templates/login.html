@@ -30,6 +30,12 @@
     <script type="text/javascript">
         $(document).ready(function () {
             openAuthDialog();
+
+            $('#rpassword').keyup(function (e) {
+                if (e.which == 13) {
+                    submitLogin();
+                }
+            });
         });
 
         var loginDialog;
@@ -51,17 +57,25 @@
                     label: 'Login',
                     cssClass: 'btn-primary',
                     action: function (dialog) {
-                        $('#rpassword').parent().removeClass("has-error");
-                        $.post('/auth', {
-                            rconPassword: $('#rpassword').val(),
-                            port: $('#port').val()
-                        }, function (data) {
-                            window.location = "/";
-                        }).fail(function () {
-                            $('#rpassword').parent().addClass("has-error");
-                        });
+                        submitLogin();
                     }
                 }]
+            });
+        }
+
+        function submitLogin() {
+            var passEl = $('#rpassword');
+            if (!passEl.val()) {
+                passEl.parent().addClass("has-error");
+            }
+            passEl.parent().removeClass("has-error");
+            $.post('/auth', {
+                rconPassword: passEl.val(),
+                port: $('#port').val()
+            }, function (data) {
+                window.location = "/";
+            }).fail(function () {
+                passEl.parent().addClass("has-error");
             });
         }
     </script>
